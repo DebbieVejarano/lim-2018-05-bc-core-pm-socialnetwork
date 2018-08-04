@@ -193,11 +193,37 @@ const createPost = (body, idPost, username, private, likes) => {
 
   //Llamando a al botón para que ejecute la función de botón like
   btnLike.addEventListener('click', e => {
-    currentLikes++;
+   
+    // currentLikes++;
     // let currentLikes = parseInt(btnLike.getAttribute('data-like'));
     console.log(currentLikes)
     //  let count += currentLikes;
-    likePost( currentLikes,userdata.uid, postKey);
+
+    function likes(){ 
+      return firebase.database().ref('posts/' + postKey + '/userlikes' )
+      .once('value')
+    }
+    const result = likes();
+
+    result.then(resuelve)
+    function resuelve(snapshot){
+      currentLikes = Object.values(snapshot.val())
+      currentLikes.map(item => {
+        if(item == userdata.uid){
+
+          console.log("no cuneta")
+        }else{
+          console.log("anade")
+        }
+      })
+      console.log(Object.values(snapshot.val()))
+      
+    }
+  
+  console.log(result);
+  
+
+    likePost( currentLikes.length,userdata.uid, postKey);
     textLikes(currentLikes,showLikes);
   });
 
@@ -217,7 +243,7 @@ let starCount = 0;
 btnToPost.addEventListener('click', () => {
   if (post.value != '') {
     let userdata = firebase.auth().currentUser;
-    createPost(post.value, undefined, userdata.displayName, true, startCount);
+    createPost(post.value, undefined, userdata.displayName, true, starCount);
     post.value = ''
   }
 });

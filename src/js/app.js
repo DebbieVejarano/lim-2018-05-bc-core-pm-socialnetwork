@@ -200,9 +200,9 @@ const likePost = (Like, userId, keyPost) => {
 
   firebase
     .database()
-    .ref('posts/' + keyPost)
+    .ref('posts/' + keyPost + "/userlikes/")
     .update({
-      starCount: Like
+      userId
     });
     
 };
